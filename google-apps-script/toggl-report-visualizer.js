@@ -44,9 +44,20 @@ function get(path) {
     const url = "https://api.track.toggl.com/api/v8" + path;
     const options = {
         "method" : "GET",
-        "headers": {"Authorization" : "Basic " + Utilities.base64Encode(BASIC_AUTH)}
+        "headers": {"Authorization" : "Basic " + Utilities.base64Encode(BASIC_AUTH)},
+        "muteHttpExceptions" : true,
+        "validateHttpsCertificates" : false,
+        "followRedirects" : false
     }
-    const response = UrlFetchApp.fetch(url, options);
+
+    try {
+        const response = UrlFetchApp.fetch(url, options);
+    } catch(e) {
+        // 例外エラー処理
+        Logger.log('Error:')
+        Logger.log(e)
+    }
+
     return JSON.parse(response);
 }
 

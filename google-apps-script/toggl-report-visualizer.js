@@ -8,6 +8,7 @@ function togglReportVisualizer() {
     const togglReportArray = makeTogglReportArray(timeEntries);
 
     //GSS へ転記
+    postTogglReportVisualizationSheet(togglReportArray);
 
     //GSS のレコードを横棒グラフに整形
         //レコードを一つずつ読み込む
@@ -52,6 +53,13 @@ function get(path) {
     return JSON.parse(response);
 }
 
+function postTogglReportVisualizationSheet(array) {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getName("TogglReport");
+    const lastRow = sheet.getLastRow();
+    const targetRange = sheet.getRange(lastRow + 1, 1, array[0].length, array.length);
+
+    return targetRange.setValues(array);
+}
   
 var Slack = {  
     post: function(message){

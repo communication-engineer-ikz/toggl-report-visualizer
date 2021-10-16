@@ -4,6 +4,8 @@
  */
 function togglReportVisualizer() {
     //Toggl の当日のレポートを取得
+    const timeEntries = getTogglTimeEntries();
+
     //GSS へ転記
 
     //GSS のレコードを横棒グラフに整形
@@ -14,31 +16,26 @@ function togglReportVisualizer() {
         //次のタイトルへ
 }
 
-var Toggl = {
-    BASIC_AUTH: '【ご自身のAPIキー】:api_token',
-  
-    get: function(path){
-        var url = 'https://www.toggl.com/api/v8' + path;
-        var options = {
-          'method' : 'GET',
-          'headers': {"Authorization" : "Basic " + Utilities.base64Encode(this.BASIC_AUTH)}
-        }
-        var response = UrlFetchApp.fetch(url, options);
-        return JSON.parse(response);
-    },
-    getTimeEntries: function(){
-        var path = '/time_entries'
-        return this.get(path)
-    },
-    getTimeEntry: function(id) {
-        var path = '/time_entries/' + id
-        return this.get(path);
-    },
-    getProject: function(id) {
-        var path = '/projects/' + id
-        return this.get(path);
-    }
+function getTogglTimeEntries() {
+    return get("/time_entries")
 }
+
+function getProject(id) {
+    return this.get("/projects/" + id);
+}
+
+function get(path) {
+    const BASIC_AUTH = getTogglApiToken();
+
+    const url = "https://www.toggl.com/api/v8" + path;
+    const options = {
+        "method" : "GET",
+        "headers": {"Authorization" : "Basic " + Utilities.base64Encode(BASIC_AUTH)}
+    }
+    const response = UrlFetchApp.fetch(url, options);
+    return JSON.parse(response);
+}
+
   
 var Slack = {  
     post: function(message){
@@ -55,7 +52,6 @@ var Slack = {
   
 function main() {
     var togglLogSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TogglLog");
-    var timeEntries = Toggl.getTimeEntries();
     var lastTimeEntryId = togglLogSheet.getRange(1,1).getValue();
   
     for(var i in timeEntries) {

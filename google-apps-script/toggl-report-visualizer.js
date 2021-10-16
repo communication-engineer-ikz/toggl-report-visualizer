@@ -5,6 +5,7 @@
 function togglReportVisualizer() {
     //Toggl の当日のレポートを取得
     const timeEntries = getTogglTimeEntries();
+    const togglReportArray = makeTogglReportArray(timeEntries);
 
     //GSS へ転記
 
@@ -18,6 +19,21 @@ function togglReportVisualizer() {
 
 function getTogglTimeEntries() {
     return get("/time_entries")
+}
+
+function makeTogglReportArray(timeEntries) {
+    const togglReportArray = [];
+
+    for (const timeEntry of timeEntries) {
+
+        const projectName = "pid" in timeEntry ? getProject(timeEntry.pid).data.name : "No Project";
+        const entryStart = timeEntry.start;
+        const description = timeEntry.description;
+
+        togglReportArray.push[projectName,entryStart,description];
+    }
+
+    return togglReportArray;
 }
 
 function getProject(id) {

@@ -15,19 +15,28 @@ function togglReportVisualizer() {
 }
 
 function makeTogglReportArray() {
-    const timeEntries = getTogglTimeEntries();
     const togglReportArray = [];
 
-    for (const timeEntry of timeEntries) {
+    // const timeEntries = getTogglTimeEntries();
+    // for (const timeEntry of timeEntries) {
 
-        const projectName = "pid" in timeEntry ? getProject(timeEntry.pid) : "No Project";
-        const entryStart = timeEntry.start;
-        const description = timeEntry.description;
+    //     const projectName = "pid" in timeEntry ? getProject(timeEntry.pid) : "No Project";
+    //     const entryStart = timeEntry.start;
+    //     const description = timeEntry.description;
 
-        togglReportArray.push[projectName,entryStart,description];
-    }
+    //     togglReportArray.push[projectName,entryStart,description];
+    // }
 
-    return togglReportArray;
+    const summuryArray = getTogglSummury();
+
+    console.log(summuryArray.data[0].title.project); //Project
+    console.log(summuryArray.data[0].items[1].title.time_entry); //Title
+
+    // for (summry of summuryArray) {
+    //     console.log(summry);
+    // }
+
+    // return togglReportArray;
 }
 
 function getTogglTimeEntries() {
@@ -58,6 +67,34 @@ function get(path) {
         // 例外エラー処理
         console.log('Error:')
         console.log(e)
+    }
+
+    return JSON.parse(response);
+}
+
+function getTogglSummury() {
+    const BASIC_AUTH = getTogglApiToken() + ":api_token";
+    const workspace_id = getWorkspaceId();
+    const user_agent = getUserAgent();
+
+    const url = "https://api.track.toggl.com/reports/api/v2/summary" 
+        + "?workspace_id=" + workspace_id 
+        + "&since=2021-10-10&until=2021-10-15&user_agent=" + user_agent;
+    const options = {
+        "method" : "GET",
+        "headers": {"Authorization" : "Basic " + Utilities.base64Encode(BASIC_AUTH)},
+        "muteHttpExceptions" : true,
+        "validateHttpsCertificates" : false,
+        "followRedirects" : false
+    }
+
+    let response;
+    try {
+        response = UrlFetchApp.fetch(url, options);
+        console.log(response.getContentText());
+    } catch(e) {
+        // 例外エラー処理
+        console.log("Error: "+ e);
     }
 
     return JSON.parse(response);

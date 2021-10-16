@@ -52,13 +52,12 @@ function get(path) {
 
     try {
         const response = UrlFetchApp.fetch(url, options);
+        return JSON.parse(response);
     } catch(e) {
         // 例外エラー処理
         Logger.log('Error:')
         Logger.log(e)
     }
-
-    return JSON.parse(response);
 }
 
 function postTogglReportVisualizationSheet(array) {

@@ -3,7 +3,15 @@
     * https://qiita.com/e99h2121/items/18533f39dc3643c1ceaf
  */
 function togglReportVisualizer() {
-  
+    //Toggl の当日のレポートを取得
+    //GSS へ転記
+
+    //GSS のレコードを横棒グラフに整形
+        //レコードを一つずつ読み込む
+        //タイトルが同じレコードの時刻を合算
+        //時刻を適当に丸める
+        //グラフ表示用シートへ転記
+        //次のタイトルへ
 }
 
 var Toggl = {

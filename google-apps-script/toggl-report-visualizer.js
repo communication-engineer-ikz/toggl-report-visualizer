@@ -39,7 +39,7 @@ function getProject(id) {
 }
 
 function get(path) {
-    const BASIC_AUTH = getTogglApiToken();
+    const BASIC_AUTH = getTogglApiToken() + ":api_token";
 
     const url = "https://api.track.toggl.com/api/v8" + path;
     const options = {

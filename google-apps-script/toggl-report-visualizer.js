@@ -4,7 +4,7 @@
  */
 function togglReportVisualizer() {
     const togglReportArray = makeTogglReportArray();
-    postTogglReportVisualizationSheet(togglReportArray);
+    // postTogglReportVisualizationSheet(togglReportArray);
 
     //GSS のレコードを横棒グラフに整形
         //レコードを一つずつ読み込む
@@ -20,7 +20,7 @@ function makeTogglReportArray() {
 
     for (const timeEntry of timeEntries) {
 
-        const projectName = "pid" in timeEntry ? getProject(timeEntry.pid).data.name : "No Project";
+        const projectName = "pid" in timeEntry ? getProject(timeEntry.pid) : "No Project";
         const entryStart = timeEntry.start;
         const description = timeEntry.description;
 
@@ -45,25 +45,30 @@ function get(path) {
     const options = {
         "method" : "GET",
         "headers": {"Authorization" : "Basic " + Utilities.base64Encode(BASIC_AUTH)},
-        "muteHttpExceptions" : true,
+        // "muteHttpExceptions" : true,
         "validateHttpsCertificates" : false,
         "followRedirects" : false
     }
 
+    let response;
     try {
-        const response = UrlFetchApp.fetch(url, options);
-        return JSON.parse(response);
+        response = UrlFetchApp.fetch(url, options);
+        console.log(response.getContentText());
     } catch(e) {
         // 例外エラー処理
-        Logger.log('Error:')
-        Logger.log(e)
+        console.log('Error:')
+        console.log(e)
     }
+
+    return JSON.parse(response);
 }
 
 function postTogglReportVisualizationSheet(array) {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getName("TogglReport");
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TogglReport");
     const lastRow = sheet.getLastRow();
-    const targetRange = sheet.getRange(lastRow + 1, 1, array[0].length, array.length);
+    console.log(array[0]);
+    console.log(array[0].length);
+    // const targetRange = sheet.getRange(lastRow + 1, 1, array[0].length(), array.length());
 
-    return targetRange.setValues(array);
+    // return targetRange.setValues(array);
 }

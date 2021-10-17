@@ -27,13 +27,13 @@ function makeTogglReportArray() {
     //     togglReportArray.push[projectName,entryStart,description];
     // }
 
-    const summuryArray = getTogglSummury();
+    const summaryArray = getTogglSummary();
 
-    console.log(summuryArray.data[0].title.project); //Project
-    console.log(summuryArray.data[0].items[1].title.time_entry); //Title
+    console.log(summaryArray.data[0].title.project); //Project
+    console.log(summaryArray.data[0].items[1].title.time_entry); //Title
 
-    // for (summry of summuryArray) {
-    //     console.log(summry);
+    // for (summary of summaryArray) {
+    //     console.log(summary);
     // }
 
     // return togglReportArray;
@@ -72,7 +72,7 @@ function get(path) {
     return JSON.parse(response);
 }
 
-function getTogglSummury() {
+function getTogglSummary() {
     const BASIC_AUTH = getTogglApiToken() + ":api_token";
     const workspace_id = getWorkspaceId();
     const user_agent = getUserAgent();

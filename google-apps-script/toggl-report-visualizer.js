@@ -4,7 +4,7 @@
  */
 function togglReportVisualizer() {
     const togglReportArray = makeTogglReportArray();
-    // postTogglReportVisualizationSheet(togglReportArray);
+    postTogglReportVisualizationSheet(togglReportArray);
 
     //GSS のレコードを横棒グラフに整形
         //レコードを一つずつ読み込む
@@ -122,9 +122,7 @@ function formatDate(date) {
 function postTogglReportVisualizationSheet(array) {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TogglReport");
     const lastRow = sheet.getLastRow();
-    console.log(array[0]);
-    console.log(array[0].length);
-    // const targetRange = sheet.getRange(lastRow + 1, 1, array[0].length(), array.length());
+    const targetRange = sheet.getRange(lastRow + 1, 1, array.length, array[0].length);
 
-    // return targetRange.setValues(array);
+    return targetRange.setValues(array);
 }

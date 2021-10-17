@@ -29,14 +29,29 @@ function makeTogglReportArray() {
 
     const summaryArray = getTogglSummary();
 
-    console.log(summaryArray.data[0].title.project); //Project
-    console.log(summaryArray.data[0].items[1].title.time_entry); //Title
+    for (let i = 0; i < summaryArray.data.length; i++) {
 
-    // for (summary of summaryArray) {
-    //     console.log(summary);
-    // }
+        const project = summaryArray.data[i].title.project;
+        const items = summaryArray.data[i].items;
 
-    // return togglReportArray;
+        for (const item of items) {
+
+            const title = item.title.time_entry;
+            const local_start = item.local_start;
+
+            const start_date = local_start.substr(0,10).replace(/-/g,"/");
+            const start_time = local_start.substr(11); //String
+
+            const start_dateTime = new Date(start_date + " " + start_time);
+            const time = item.time; //millionsecond
+
+            const end_dateTime = new Date(start_dateTime.getTime() + time);
+
+            togglReportArray.push([project, title, formatDate(start_dateTime), formatDate(end_dateTime)]);
+        }
+    }
+
+    return togglReportArray; //日付の昇順でソートしたい
 }
 
 function getTogglTimeEntries() {
@@ -98,6 +113,10 @@ function getTogglSummary() {
     }
 
     return JSON.parse(response);
+}
+
+function formatDate(date) {
+    return Utilities.formatDate(date, "JST", "yyy/MM/dd HH:mm:ss")
 }
 
 function postTogglReportVisualizationSheet(array) {

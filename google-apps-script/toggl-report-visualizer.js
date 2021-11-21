@@ -23,43 +23,49 @@ function getTogglAccountInfo() {
     return targetRange.getValues();
 }
 
-function makeTogglReportArray() {
+function makeTogglReportArray(togglAccountInfoArray) {
     const togglReportArray = [];
-    //引数で渡ってきたUserAgent の配列の個数分for を回す。
 
-    // const timeEntries = getTogglTimeEntries();
-    // for (const timeEntry of timeEntries) {
+    for (togglAccountInfo of togglAccountInfoArray) {
 
-    //     const projectName = "pid" in timeEntry ? getProject(timeEntry.pid) : "No Project";
-    //     const entryStart = timeEntry.start;
-    //     const description = timeEntry.description;
+        const api_token = togglAccountInfo[0];
+        const workspace_id = togglAccountInfo[1];
+        const user_agent = togglAccountInfo[2];
 
-    //     togglReportArray.push[projectName,entryStart,description];
-    // }
+        // const timeEntries = getTogglTimeEntries();
+        // for (const timeEntry of timeEntries) {
 
-    const summaryArray = getTogglSummary();
+        //     const projectName = "pid" in timeEntry ? getProject(timeEntry.pid) : "No Project";
+        //     const entryStart = timeEntry.start;
+        //     const description = timeEntry.description;
 
-    //for...of で記載すれば十分
-    for (let i = 0; i < summaryArray.data.length; i++) {
+        //     togglReportArray.push[projectName,entryStart,description];
+        // }
 
-        const project = summaryArray.data[i].title.project;
-        const items = summaryArray.data[i].items;
+        const summaryArray = getTogglSummary(api_token, workspace_id, user_agent);
 
-        for (const item of items) {
+        //for...of で記載すれば十分
+        for (let i = 0; i < summaryArray.data.length; i++) {
 
-            const title = item.title.time_entry;
-            const local_start = item.local_start;
+            const project = summaryArray.data[i].title.project;
+            const items = summaryArray.data[i].items;
 
-            const start_date = local_start.substr(0,10).replace(/-/g,"/");
-            const start_time = local_start.substr(11); //String
+            for (const item of items) {
 
-            const start_dateTime = new Date(start_date + " " + start_time);
-            const time = item.time; //millionsecond
+                const title = item.title.time_entry;
+                const local_start = item.local_start;
 
-            const end_dateTime = new Date(start_dateTime.getTime() + time);
+                const start_date = local_start.substr(0,10).replace(/-/g,"/");
+                const start_time = local_start.substr(11); //String
 
-            //1つ目の要素にメールアドレスを入れる。
-            togglReportArray.push([project, title, formatDate(start_dateTime), formatDate(end_dateTime)]);
+                const start_dateTime = new Date(start_date + " " + start_time);
+                const time = item.time; //millionsecond
+
+                const end_dateTime = new Date(start_dateTime.getTime() + time);
+
+                //1つ目の要素にメールアドレスを入れる。
+                togglReportArray.push([project, title, formatDate(start_dateTime), formatDate(end_dateTime)]);
+            }
         }
     }
 
@@ -99,11 +105,8 @@ function get(path) {
     return JSON.parse(response);
 }
 
-function getTogglSummary() {
-    const BASIC_AUTH = getTogglApiToken() + ":api_token";
-    const workspace_id = getWorkspaceId();
-    const user_agent = getUserAgent(); //引数として渡したい
-
+function getTogglSummary(api_token, workspace_id, user_agent) {
+    const BASIC_AUTH = api_token + ":api_token";
     const url = "https://api.track.toggl.com/reports/api/v2/summary" 
         + "?workspace_id=" + workspace_id 
         + "&since=2021-10-10&until=2021-10-15&user_agent=" + user_agent;

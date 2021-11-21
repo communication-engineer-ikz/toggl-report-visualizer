@@ -3,7 +3,8 @@
     * https://qiita.com/e99h2121/items/18533f39dc3643c1ceaf
  */
 function togglReportVisualizer() {
-    const togglReportArray = makeTogglReportArray();
+    //UserAgent 取得処理
+    const togglReportArray = makeTogglReportArray(); //UserAgent を引数で渡す。
     postTogglReportVisualizationSheet(togglReportArray);
 
     //GSS のレコードを横棒グラフに整形
@@ -16,6 +17,7 @@ function togglReportVisualizer() {
 
 function makeTogglReportArray() {
     const togglReportArray = [];
+    //引数で渡ってきたUserAgent の配列の個数分for を回す。
 
     // const timeEntries = getTogglTimeEntries();
     // for (const timeEntry of timeEntries) {
@@ -29,6 +31,7 @@ function makeTogglReportArray() {
 
     const summaryArray = getTogglSummary();
 
+    //for...of で記載すれば十分
     for (let i = 0; i < summaryArray.data.length; i++) {
 
         const project = summaryArray.data[i].title.project;
@@ -47,6 +50,7 @@ function makeTogglReportArray() {
 
             const end_dateTime = new Date(start_dateTime.getTime() + time);
 
+            //1つ目の要素にメールアドレスを入れる。
             togglReportArray.push([project, title, formatDate(start_dateTime), formatDate(end_dateTime)]);
         }
     }
@@ -90,7 +94,7 @@ function get(path) {
 function getTogglSummary() {
     const BASIC_AUTH = getTogglApiToken() + ":api_token";
     const workspace_id = getWorkspaceId();
-    const user_agent = getUserAgent();
+    const user_agent = getUserAgent(); //引数として渡したい
 
     const url = "https://api.track.toggl.com/reports/api/v2/summary" 
         + "?workspace_id=" + workspace_id 

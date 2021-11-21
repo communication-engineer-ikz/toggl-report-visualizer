@@ -7,7 +7,7 @@ function togglReportVisualizer() {
     const togglReportArray = makeTogglReportArray(togglAccountInfoArray);
     postTogglReportVisualizationSheet(togglReportArray);
 
-    //GSS のレコードを横棒グラフに整形
+    //GSS のレコードを横棒グラフに整形 todo
         //レコードを一つずつ読み込む
         //タイトルが同じレコードの時刻を合算
         //時刻を適当に丸める
@@ -44,7 +44,7 @@ function makeTogglReportArray(togglAccountInfoArray) {
 
         const summaryArray = getTogglSummary(api_token, workspace_id, user_agent);
 
-        //for...of で記載すれば十分
+        //for...of で記載すれば十分 todo
         for (let i = 0; i < summaryArray.data.length; i++) {
 
             const project = summaryArray.data[i].title.project;
@@ -68,7 +68,7 @@ function makeTogglReportArray(togglAccountInfoArray) {
         }
     }
 
-    return togglReportArray; //日付の昇順でソートしたい
+    return togglReportArray; //日付の昇順でソートしたい todo
 }
 
 function getTogglTimeEntries() {

@@ -108,7 +108,7 @@ function getTogglSummary(api_token, workspace_id, user_agent) {
     const BASIC_AUTH = api_token + ":api_token";
     const url = "https://api.track.toggl.com/reports/api/v2/summary" 
         + "?workspace_id=" + workspace_id 
-        + "&since=2021-10-10&until=2021-10-15&user_agent=" + user_agent;
+        + "&since=2021-10-10&until=2021-10-15&user_agent=" + user_agent; //取得期間を動的に決める todo
     const options = {
         "method" : "GET",
         "headers": {"Authorization" : "Basic " + Utilities.base64Encode(BASIC_AUTH)},

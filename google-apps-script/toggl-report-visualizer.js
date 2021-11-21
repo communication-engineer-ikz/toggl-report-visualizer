@@ -63,8 +63,7 @@ function makeTogglReportArray(togglAccountInfoArray) {
 
                 const end_dateTime = new Date(start_dateTime.getTime() + time);
 
-                //1つ目の要素にメールアドレスを入れる。
-                togglReportArray.push([project, title, formatDate(start_dateTime), formatDate(end_dateTime)]);
+                togglReportArray.push([user_agent, project, title, formatDate(start_dateTime), formatDate(end_dateTime)]);
             }
         }
     }

@@ -18,7 +18,7 @@ function togglReportVisualizer() {
 function getTogglAccountInfo() {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TogglAccountInfo");
     const lastRow = sheet.getLastRow();
-    const targetRange = sheet.getRange(2, 1, 3, lastRow);
+    const targetRange = sheet.getRange(2, 1, lastRow - 1, 3);
 
     return targetRange.getValues();
 }

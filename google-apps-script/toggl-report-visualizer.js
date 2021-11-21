@@ -3,8 +3,8 @@
     * https://qiita.com/e99h2121/items/18533f39dc3643c1ceaf
  */
 function togglReportVisualizer() {
-    //UserAgent 取得処理
-    const togglReportArray = makeTogglReportArray(); //UserAgent を引数で渡す。
+    const togglAccountInfoArray = getTogglAccountInfo();
+    const togglReportArray = makeTogglReportArray(togglAccountInfoArray);
     postTogglReportVisualizationSheet(togglReportArray);
 
     //GSS のレコードを横棒グラフに整形
@@ -13,6 +13,14 @@ function togglReportVisualizer() {
         //時刻を適当に丸める
         //グラフ表示用シートへ転記
         //次のタイトルへ
+}
+
+function getTogglAccountInfo() {
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TogglAccountInfo");
+    const lastRow = sheet.getLastRow();
+    const targetRange = sheet.getRange(2, 1, 3, lastRow);
+
+    return targetRange.getValues();
 }
 
 function makeTogglReportArray() {
